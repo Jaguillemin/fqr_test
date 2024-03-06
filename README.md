@@ -15,8 +15,9 @@ foreach(j = seq(from=1, to=100, by=1), .combine = "rbind")%do%{  #third loop, Ge
 data.frame(gens=j, pops= k, p_series= i) } #close first loop
  } #close second loop
  }#close third loop
+ mutate(sim_id= paste(gens, pops, p_series, sep="_"))-> o.mut
  # Make a parameter file from the loop output
- write.table(o, file = "param.txt")
+ write.table(o.mut, file = "param.txt", quote=FALSE)
 
 # R-script
 ## Script name: simulate.drift.R
@@ -35,9 +36,9 @@ library(foreach, lib.loc = "/gpfs1/cl/biol6990/R_shared")
 
 #Lets the script know where items are in the parameter file
 args = commandArgs(trailingOnly=TRUE)
-p_series=as.numeric(args[1])
-gens=as.numeric(args[2])
-pop=as.numeric(args[3])
+p_series=as.numeric(args[3])
+gens=as.numeric(args[1])
+pop=as.numeric(args[2])
 
 drift_func = function(t, p0, n){
 freqs = as.numeric()
@@ -76,9 +77,9 @@ module load Rtidyverse
 
 #reminder of args
 #args = commandArgs(trailingOnly=TRUE)
-#p_series=as.numeric(args[1])
-#gens=as.numeric(args[2])
-#pop=as.numeric(args[3])
+#p_series=as.numeric(args[3])
+#gens=as.numeric(args[1])
+#pop=as.numeric(args[2])
 
 paramfile=param.txt
 
@@ -102,6 +103,7 @@ library(tidyverse)
 library(foreach, lib.loc = "/gpfs1/cl/biol6990/R_shared")
 
 ## collation
+R
 library(foreach, lib.loc = "/gpfs1/cl/biol6990/R_shared")
 command = paste("ls | grep 'g_prac_6' " )
 files_o = system(command, intern = TRUE )
