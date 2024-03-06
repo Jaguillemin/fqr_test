@@ -56,7 +56,7 @@ freqs = as.numeric()
 return(freqs)
 }
 time_series=
-foreach(n = c(2*5, 2*25, 2*50, 2*500, 2*5000), .combine = "rbind")%do%{
+foreach(n = 1:pop), .combine = "rbind")%do%{
 p_out=drift_func(gens,p_series,n)
 data.frame(p=freqs, gens = 1:t, size = n, simulations=paste(“s”,gens,p_series,n, sep = “.”) )
 save(,file = paste("g_prac_6",p_series,gens,pop, "Rdata", sep ="."))
